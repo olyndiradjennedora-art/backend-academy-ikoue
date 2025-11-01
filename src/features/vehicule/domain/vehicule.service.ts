@@ -30,6 +30,11 @@ export class vehiculeService {
         return Promise.resolve(result)
     }
 
+    async modifier(id: string, vehicule: Vehicules): Promise<Vehicules> {
+        const result = await this.repo.modifierVehicule(id, vehicule)
+        return Promise.resolve(result)
+    }
+
     async delete(id: string): Promise<void> {
         const reponse = await this.repo.supprimerVehicule(id)
         return Promise.resolve(reponse)

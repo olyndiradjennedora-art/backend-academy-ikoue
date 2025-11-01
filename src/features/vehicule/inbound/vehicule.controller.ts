@@ -41,13 +41,19 @@ export function vehiculeController(service: vehiculeService):Router{
             res.status(200).json(vehicule);
      })
 
+     router.put('/:id', async (req: Request, res: Response) => {
+       const {id} = req.params
+       const request = req.body
+       const result = await service.modifier(id as string, request)
+       res.status(201).json(result)
+       
+     })
+
      router.delete('/:id', async (req: Request, res: Response) => {
             const request = req.body
             const vehicule = await service.delete(request)
             res.status(200).json(vehicule);
      })
-
-     
 
      return router
 

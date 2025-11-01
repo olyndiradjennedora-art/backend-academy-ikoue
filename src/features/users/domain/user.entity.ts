@@ -14,6 +14,8 @@ export type Users = {
 export interface UsersRepository {
     createUser(user: Users): Promise<Users>;
     findUserByEmail(email: string): Promise<string>; 
+    updateUser(id: string, user: Users): Promise<Users>;
+    deleteUser(id: string): void;
 }
 
 
