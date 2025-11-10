@@ -1,39 +1,47 @@
-import type { VehiculesRepository, Vehicules } from "../domain/vehicule.entity";
+import { eq } from 'drizzle-orm';
 
+import db from '../../../db';
+import { vehiculeTable } from '../../../db/schema/vehicule';
+import type {
+  CreateVehiculeInput,
+  UpdateVehiculeInput,
+  Vehicule,
+  VehiculesRepository,
+} from '../domain/vehicule.entity';
 
-export class vehiculeRepository implements VehiculesRepository {
-
-    private tableau: Vehicules[] = []
-
-    createVehicule(vehicule: Vehicules): Promise<Vehicules> {
-        this.tableau.push(vehicule)
-        return Promise.resolve(vehicule)
-    
+export class VehiculeRepository implements VehiculesRepository {
+  async create(vehicule: CreateVehiculeInput): Promise<Vehicule> {
+    const [created] = await db.insert(vehiculeTable).values(vehicule).returning();
+    if (!created) {
+      throw new Error('Échec de la création du véhicule.');
     }
+    return created;
+  }
 
-    afficherVehicule(): Promise<Vehicules[]> {
-        return Promise.resolve(this.tableau)
-    }
+  async findAll(): Promise<Vehicule[]> {
+    return db.select().from(vehiculeTable);
+  }
 
-    rechercherVehicule(id: string): Promise<Vehicules | undefined> {
-        const select = this.tableau.find(vehicule => vehicule.id === id);
-        return Promise.resolve(select);
-    }
+  async findById(vehiculeId: string): Promise<Vehicule | undefined> {
+    const result = await db.select().from(vehiculeTable).where(eq(vehiculeTable.veh_id, vehiculeId));
+    return result.at(0);
+  }
 
-    modifierVehicule(id: string, vehicule: Vehicules): Promise<Vehicules> {
-        // TODO: implement modification logic later
-        const index = this.tableau.findIndex(vehicule => vehicule.id === id);
-            if(index === -1) null;
-            this.tableau[index] = {...this.tableau[index], ...vehicule};
-        return Promise.resolve(vehicule);
-    }
+  async update(vehiculeId: string, data: UpdateVehiculeInput): Promise<Vehicule | undefined> {
+    const [updated] = await db
+      .update(vehiculeTable)
+      .set(data)
+      .where(eq(vehiculeTable.veh_id, vehiculeId))
+      .returning();
+    return updated ?? undefined;
+  }
 
-    supprimerVehicule(id: string): void {
-        const index = this.tableau.findIndex(vehicule => vehicule.id === id)
-        if(index === -1) false;
-            this.tableau.splice(index, 1);
-            true
-    }   
-
-
+  async delete(vehiculeId: string): Promise<boolean> {
+    const deleted = await db
+      .delete(vehiculeTable)
+      .where(eq(vehiculeTable.veh_id, vehiculeId))
+      .returning();
+    return deleted.length > 0;
+  }
 }
+

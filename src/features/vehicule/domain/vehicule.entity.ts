@@ -1,28 +1,26 @@
-import {strictObject, string, z} from "zod"
-
-export interface Authorisation{
-    token : string
+export interface Vehicule {
+  veh_id: string;
+  veh_marque: string;
+  veh_categorie: string;
+  veh_anFabri: string;
+  veh_couleur: string;
+  veh_carburant: string;
+  veh_nmbrePlace: string;
+  veh_statut: string;
+  veh_prix: number;
+  veh_photo: string;
+  veh_description: string;
 }
 
-export type Vehicules = {
-    id: string;
-    marque: string;
-    categorie: string;
-    anFabrication: string;
-    couleur: string;
-    carburant: string;
-    nmbrePlace: string;
-    statut: string;
-    prix: number;
-    photo: string;
-    descripotion: string;
-}
+export type CreateVehiculeInput = Vehicule;
 
-export interface VehiculesRepository{
-    createVehicule(vehicule: Vehicules): Promise<Vehicules | undefined>;
-    rechercherVehicule(id: string): Promise<Vehicules | undefined>;
-    modifierVehicule(id: string, vehicule: Vehicules): Promise<Vehicules>;
-    supprimerVehicule(id: string): void;
-    afficherVehicule(): Promise<Vehicules[]>;
+export type UpdateVehiculeInput = Partial<Omit<Vehicule, 'veh_id'>>;
+
+export interface VehiculesRepository {
+  create(vehicule: CreateVehiculeInput): Promise<Vehicule>;
+  findAll(): Promise<Vehicule[]>;
+  findById(vehiculeId: string): Promise<Vehicule | undefined>;
+  update(vehiculeId: string, data: UpdateVehiculeInput): Promise<Vehicule | undefined>;
+  delete(vehiculeId: string): Promise<boolean>;
 }
 

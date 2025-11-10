@@ -1,12 +1,18 @@
-import { vehiculeRepository } from "./outbound/vehicule.repository";
-import { vehiculeService } from "./domain/vehicule.service";
-import { vehiculeController } from "./inbound/vehicule.controller";
-require('dotenv').config()
+import { Router } from 'express';
 
-const repo = new vehiculeRepository()
-const service = new vehiculeService(repo)
-const router = vehiculeController(service)
+import { VehiculeService } from './domain/vehicule.service';
+import { VehiculeController } from './inbound/vehicule.controller';
 
+export const createVehiculeRouter = (service: VehiculeService) => {
+  const controller = new VehiculeController(service);
+  const router = Router();
 
-export default router; 
+  router.post('/', controller.create);
+  router.get('/', controller.findAll);
+  router.get('/:veh_id', controller.findById);
+  router.put('/:veh_id', controller.update);
+  router.delete('/:veh_id', controller.delete);
+
+  return router;
+};
 

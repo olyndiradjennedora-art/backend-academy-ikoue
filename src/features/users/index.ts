@@ -1,9 +1,19 @@
-import { userRepository } from "./outbound/user.repository";
-import { userService } from "./domain/user.service";
-import { UserController } from "./inbound/user.controller";
+import { Router } from 'express';
 
-const repo = new userRepository()
-const service = new userService(repo)
-const router = UserController(service)
+import { UserService } from './domain/user.service';
+import { UserController } from './inbound/user.controller';
 
-export default router;
+export const createUserRouter = (service: UserService) => {
+  const controller = new UserController(service);
+  const router = Router();
+
+  router.post('/', controller.create);
+  router.post('/login', controller.login);
+  router.get('/', controller.findAll);
+  router.get('/:user_email', controller.findByEmail);
+  router.put('/:user_id', controller.update);
+  router.delete('/:user_id', controller.delete);
+
+  return router;
+};
+

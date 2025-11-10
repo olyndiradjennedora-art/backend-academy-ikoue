@@ -1,24 +1,21 @@
-
-/// [ROUTE/CONTROLLER] --> [USECASE/SERVICE] --> [REPOSITORY] --> [DATABASE]
-
-export type Users = {
-    id: string;
-    nom: string;
-    prenom: string;
-    email: string;
-    password: string;
-    role: string;
+export interface User {
+  user_id: string;
+  user_nom: string;
+  user_prenom: string;
+  user_email: string;
+  user_password: string;
+  user_role: string;
 }
 
+export type CreateUserInput = User;
+
+export type UpdateUserInput = Partial<Omit<User, 'user_id'>>;
 
 export interface UsersRepository {
-    createUser(user: Users): Promise<Users>;
-    findUserByEmail(email: string): Promise<string>; 
-    updateUser(id: string, user: Users): Promise<Users>;
-    deleteUser(id: string): void;
+  create(user: CreateUserInput): Promise<User>;
+  findAll(): Promise<User[]>;
+  findByEmail(email: string): Promise<User | undefined>;
+  update(userId: string, data: UpdateUserInput): Promise<User | undefined>;
+  delete(userId: string): Promise<boolean>;
 }
-
-
-
-
 

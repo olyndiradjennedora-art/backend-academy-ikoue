@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "drizzle-kit": "^0.31.6",
+    "tsx": "^4.20.6"
   },
   "peerDependencies": {
     "typescript": "^5"
@@ -13,16 +15,21 @@
     "dev": "bun run index"
   },
   "dependencies": {
+    "@faker-js/faker": "^10.1.0",
+    "@libsql/client": "^0.15.15",
     "@types/bcrypt": "^6.0.0",
     "@types/bcryptjs": "^3.0.0",
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.4",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/supertest": "^6.0.3",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.7",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "supertest": "^7.1.4",
     "zod": "^4.1.12"
   }
 }

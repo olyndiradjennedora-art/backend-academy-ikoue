@@ -1,6 +1,9 @@
-import app from './src/app/server'
-const secret = process.env.JWT_SECRET
+import { createApp } from './src/app/server';
+import { loadEnvironment } from './src/config/env';
 
-app.listen(3000, () => {
-    console.log(`serveur sur écoute au port 3000 ${secret}`)
-})
+const config = loadEnvironment();
+const app = createApp();
+
+app.listen(config.port, () => {
+  console.log(`Serveur en écoute sur le port ${config.port}`);
+});
